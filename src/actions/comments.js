@@ -8,7 +8,7 @@ export async function saveComment({ postId, parentCommentId }, formData) {
   const session = await auth();
 
   await db.query(
-    "INSERT INTO comments (user_id, post_id, parent_comment_id, body) VALUES ($1, $2, $3, $4)",
+    "INSERT INTO d_comments (user_id, post_id, parent_comment_id, body) VALUES ($1, $2, $3, $4)",
     [session.user.id, postId, parentCommentId, formData.get("comment")]
   );
 

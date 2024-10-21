@@ -58,12 +58,12 @@ CREATE TABLE posts (
 );
 
 -- Comments table
-CREATE TABLE comments (
+CREATE TABLE d_comments (
     id SERIAL PRIMARY KEY,
     body TEXT NOT NULL,
     user_id INT REFERENCES users(id),
     post_id INT REFERENCES posts(id),
-    parent_comment_id INT NULL REFERENCES comments(id),
+    parent_comment_id INT NULL REFERENCES d_comments(id),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

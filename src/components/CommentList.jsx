@@ -3,7 +3,7 @@ import { CommentForm } from "./CommentForm";
 import Image from "next/image";
 
 export async function CommentList({ postId, parentCommentId = null }) {
-  const commentQuery = `SELECT comments.id, comments.body, users.name, users.image FROM comments JOIN users ON comments.user_id = users.id WHERE post_id = $1 AND parent_comment_id ${
+  const commentQuery = `SELECT d_comments.id, d_comments.body, users.name, users.image FROM d_comments JOIN users ON d_comments.user_id = users.id WHERE post_id = $1 AND parent_comment_id ${
     parentCommentId ? `= $2` : `IS NULL`
   }`;
   const commentArgs = [postId];
@@ -18,7 +18,7 @@ export async function CommentList({ postId, parentCommentId = null }) {
       {comments.rows.map((comment) => (
         <li key={comment.id} className="pt-2">
           <div className="flex space-x-3 items-center pb-2">
-            <img
+            <Image
               src={comment.image}
               alt={comment.name}
               width={32}
