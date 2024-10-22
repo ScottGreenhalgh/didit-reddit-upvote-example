@@ -3,6 +3,7 @@ import { Pagination } from "./Pagination";
 import { Vote } from "./Vote";
 import { db } from "@/db";
 import { POSTS_PER_PAGE } from "@/config";
+import { timeSince } from "@/utils/utility";
 
 export async function PostList({ currentPage = 1 }) {
   const { rows: posts } =
@@ -19,23 +20,29 @@ export async function PostList({ currentPage = 1 }) {
   return (
     <>
       <ul className="max-w-screen-lg mx-auto p-4 mb-4">
-        {posts.map((post) => (
-          <li
-            key={post.id}
-            className=" py-4 flex space-x-6 hover:bg-zinc-200 rounded-lg"
-          >
-            <Vote postId={post.id} votes={post.vote_total} />
-            <div>
-              <Link
-                href={`/post/${post.id}`}
-                className="text-3xl hover:text-pink-500"
-              >
-                {post.title}
-              </Link>
-              <p className="text-zinc-700">posted by {post.name}</p>
-            </div>
-          </li>
-        ))}
+        {posts.map((post) => {
+          const createdAtDate = new Date(post.created_at);
+          const timeDifference = timeSince(createdAtDate);
+          return (
+            <li
+              key={post.id}
+              className=" py-4 flex space-x-6 hover:bg-zinc-200 rounded-lg"
+            >
+              <Vote postId={post.id} votes={post.vote_total} />
+              <div>
+                <Link
+                  href={`/post/${post.id}`}
+                  className="text-3xl hover:text-pink-500"
+                >
+                  {post.title}
+                </Link>
+                <p className="text-zinc-700">
+                  posted by {post.name} | {timeDifference} ago
+                </p>
+              </div>
+            </li>
+          );
+        })}
       </ul>
       <Pagination currentPage={currentPage} />
     </>
