@@ -19,3 +19,25 @@ export function timeSince(date) {
 
   return `${Math.floor(seconds)} secs`;
 }
+
+// we love switches
+export const sortPosts = (posts, sortBy) => {
+  return posts.sort((a, b) => {
+    switch (sortBy) {
+      case "asc":
+        return a.title.localeCompare(b.title); // Sort A-Z
+      case "desc":
+        return b.title.localeCompare(a.title); // Sort Z-A
+      case "newest":
+        return new Date(b.created_at) - new Date(a.created_at); // Newest first
+      case "oldest":
+        return new Date(a.created_at) - new Date(b.created_at); // Oldest first
+      case "most-upvoted":
+        return b.upvotes - a.upvotes; // Sort by most upvoted
+      case "most-total-votes":
+        return b.total_votes - a.total_votes; // Sort by most total votes
+      default:
+        return 0; // Default to no sorting
+    }
+  });
+};

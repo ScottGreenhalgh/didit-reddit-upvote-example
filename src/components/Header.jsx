@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { signIn, signOut } from "@/auth";
+import { signIn, signOut } from "@/utils/auth";
 import auth from "../app/middleware";
 
 export default async function Header() {

@@ -1,12 +1,15 @@
-import { auth } from "@/auth";
-import { db } from "@/db";
+import { auth, signIn } from "@/utils/auth";
+import { db } from "@/utils/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { LoginButton } from "@/components/LoginButton";
-import { LogoutButton } from "@/components/LogoutButton";
 
 export default async function Home() {
   const session = await auth();
+
+  async function handleLogin() {
+    "use server";
+    await signIn();
+  }
 
   async function savePost(formData) {
     "use server";
@@ -29,7 +32,12 @@ export default async function Home() {
   if (!session) {
     return (
       <div className="max-w-screen-lg mx-auto p-4 mt-10">
-        You need to login to create a post <LoginButton />
+        You need to login to create a post
+        <form action={handleLogin} className="inline">
+          <button className="bg-pink-300 text-black px-3 py-2 rounded">
+            Login
+          </button>
+        </form>
       </div>
     );
   }

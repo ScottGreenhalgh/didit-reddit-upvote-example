@@ -1,7 +1,7 @@
 import { CommentForm } from "@/components/CommentForm";
 import { CommentList } from "@/components/CommentList";
 import { Vote } from "@/components/Vote";
-import { db } from "@/db";
+import { db } from "@/utils/db";
 import { timeSince } from "@/utils/utility";
 
 export function generateMetadata({ params }) {
