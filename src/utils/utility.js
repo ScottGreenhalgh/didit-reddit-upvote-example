@@ -41,3 +41,10 @@ export const sortPosts = (posts, sortBy) => {
     }
   });
 };
+
+export const formatVotes = (votes) => {
+  if (votes >= 1000) {
+    return (votes / 1000).toFixed(votes % 1000 >= 100 ? 1 : 0) + "K";
+  }
+  return votes;
+};

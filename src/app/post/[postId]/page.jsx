@@ -32,7 +32,7 @@ export default async function SinglePostPage({ params }) {
      JOIN users on votes.user_id = users.id`
   );
 
-  console.log(posts);
+  // console.log(posts);
 
   const createdAtDate = new Date(post.created_at);
   const timeDifference = timeSince(createdAtDate);

@@ -5,6 +5,7 @@ import { db } from "@/utils/db";
 import { POSTS_PER_PAGE } from "@/utils/config";
 import { sortPosts, timeSince } from "@/utils/utility";
 import QueryButtons from "@/components/QueryButtons";
+import Image from "next/image";
 
 export function generateMetadata({ params }) {
   const { username } = params;
@@ -36,16 +37,77 @@ export default async function UserPage({ params, searchParams }) {
     [fUsername, POSTS_PER_PAGE, POSTS_PER_PAGE * (currentPage - 1)]
   );
 
-  if (posts.length === 0) {
-    return <p>404 | No posts found for {fUsername}</p>;
-  }
+  const profile = await db.query(
+    `SELECT image, id FROM users WHERE name = $1`,
+    [fUsername]
+  );
+  const pfpImg = profile.rows[0].image;
+  const userId = `#${profile.rows[0].id}`;
+
+  // if (posts.length === 0) {
+  //   return <p>404 | No posts found for {fUsername}</p>;
+  // }
+
+  const karma = await db.query(
+    `
+    WITH user_data AS (
+      SELECT id AS user_id 
+      FROM users 
+      WHERE name = $1
+    ),
+    user_posts AS (
+      SELECT id AS post_id 
+      FROM posts 
+      WHERE user_id = (SELECT user_id FROM user_data)
+    ),
+    user_votes AS (
+      SELECT vote
+      FROM votes 
+      WHERE post_id IN (SELECT post_id FROM user_posts)
+    )
+    SELECT 
+      COALESCE(SUM(CASE WHEN vote = 1 THEN 1 ELSE 0 END), 0) AS total_upvotes,
+      COALESCE(SUM(CASE WHEN vote = -1 THEN 1 ELSE 0 END), 0) AS total_downvotes,
+      COALESCE(SUM(vote), 0) AS vote_difference
+    FROM user_votes;
+  `,
+    [fUsername]
+  );
+
+  console.log(karma.rows[0]);
+
+  // Fetch votes from the query
+  const { total_upvotes, total_downvotes, vote_difference } = karma.rows[0];
 
   const sortedPosts = sortPosts(posts, sortBy);
   const prefix = `/u/${username}`;
 
   return (
     <div className="max-w-screen-lg mx-auto p-4">
-      <h1 className="text-4xl mb-6">{fUsername}&#39;s Posts</h1>
+      {/* profile heading */}
+      <div className=" flex gap-4 items-baseline">
+        <Image
+          src={pfpImg}
+          alt={fUsername}
+          width={50}
+          height={50}
+          className="rounded-full"
+          style={{ width: "auto", height: "auto" }}
+        />
+        <h1 className="text-4xl mb-6 font-bold">{fUsername}</h1>
+        <p>{userId}</p>
+      </div>
+      <div>
+        {/* upvotes downvotes (karma) */}
+        <h1 className="underline">Karma</h1>
+        <ul>
+          <li>Total Upvotes: {total_upvotes}</li>
+          <li>Total Downvotes: {total_downvotes}</li>
+          <li>Karama Score: {vote_difference}</li>
+        </ul>
+      </div>
+      <br />
+      <h3 className="text-2xl mb-6 underline">Posts</h3>
       <QueryButtons prefix={prefix} />
       <ul className="mb-4">
         {posts.length > 0 ? (
