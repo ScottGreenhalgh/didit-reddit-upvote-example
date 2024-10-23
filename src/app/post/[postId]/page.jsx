@@ -4,6 +4,7 @@ import SafeHTML from "@/components/SafeHTML";
 import { Vote } from "@/components/Vote";
 import { db } from "@/utils/db";
 import { timeSince } from "@/utils/utility";
+import Link from "next/link";
 
 export function generateMetadata({ params }) {
   const { postId } = params;
@@ -45,7 +46,14 @@ export default async function SinglePostPage({ params }) {
         <div className="">
           <h1 className="text-2xl">{post.title}</h1>
           <p className="text-zinc-400 mb-4">
-            Posted by {post.name} | {timeDifference} ago
+            Posted by{" "}
+            <Link
+              className="hover:text-pink-500"
+              href={`/u/${post.name.replace(/ /g, "-")}`}
+            >
+              {post.name}
+            </Link>{" "}
+            | {timeDifference} ago
           </p>
         </div>
       </div>

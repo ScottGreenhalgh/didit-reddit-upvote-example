@@ -50,7 +50,14 @@ export async function PostList({ currentPage, searchParams }) {
                   {post.title}
                 </Link>
                 <p className="text-zinc-700">
-                  posted by {post.name} | {timeDifference} ago
+                  Posted by{" "}
+                  <Link
+                    className="hover:text-pink-500"
+                    href={`/u/${post.name.replace(/ /g, "-")}`}
+                  >
+                    {post.name}
+                  </Link>{" "}
+                  | {timeDifference} ago
                 </p>
               </div>
             </li>

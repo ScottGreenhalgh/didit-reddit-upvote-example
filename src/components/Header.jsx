@@ -29,7 +29,10 @@ export default async function Header() {
       <div className="ml-auto">
         {session ? (
           <div>
-            <Link href={`/u/${session.user.name.replace(/ /g, "-")}`}>
+            <Link
+              className="hover:text-pink-500"
+              href={`/u/${session.user.name.replace(/ /g, "-")}`}
+            >
               {session.user.name}{" "}
               <span className="text-xs text-zinc-400 mr-3">
                 #{session.user.id}

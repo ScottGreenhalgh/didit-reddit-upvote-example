@@ -24,24 +24,48 @@ const QueryButtons = ({ prefix }) => {
   };
 
   return (
-    <form className="flex gap-4">
+    <form className="flex gap-4 ">
       {/* Sorting buttons */}
-      <button type="button" onClick={(e) => handleSort(e, "asc")}>
+      <button
+        className="hover:text-pink-500"
+        type="button"
+        onClick={(e) => handleSort(e, "asc")}
+      >
         Sort: A-Z
       </button>
-      <button type="button" onClick={(e) => handleSort(e, "desc")}>
+      <button
+        className="hover:text-pink-500"
+        type="button"
+        onClick={(e) => handleSort(e, "desc")}
+      >
         Sort: Z-A
       </button>
-      <button type="button" onClick={(e) => handleSort(e, "newest")}>
+      <button
+        className="hover:text-pink-500"
+        type="button"
+        onClick={(e) => handleSort(e, "newest")}
+      >
         Sort: Newest
       </button>
-      <button type="button" onClick={(e) => handleSort(e, "oldest")}>
+      <button
+        className="hover:text-pink-500"
+        type="button"
+        onClick={(e) => handleSort(e, "oldest")}
+      >
         Sort: Oldest
       </button>
-      <button type="button" onClick={(e) => handleSort(e, "most-upvoted")}>
+      <button
+        className="hover:text-pink-500"
+        type="button"
+        onClick={(e) => handleSort(e, "most-upvoted")}
+      >
         Sort: Most Upvoted
       </button>
-      <button type="button" onClick={(e) => handleSort(e, "most-total-votes")}>
+      <button
+        className="hover:text-pink-500"
+        type="button"
+        onClick={(e) => handleSort(e, "most-total-votes")}
+      >
         Sort: Most Total Votes
       </button>
 
