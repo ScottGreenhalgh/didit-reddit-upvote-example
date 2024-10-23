@@ -34,7 +34,7 @@ The project is a work in progress and is not yet complete.
 
 - [x] User profiles
 - [x] Sorting posts by recent (date posted), top (most upvotes), and most controversial (most upvotes _and_ downvotes)
-- [ ] User karma scores
+- [x] User karma scores
 - [ ] User badges / trophies (awards for achievements like number of posts, years on the site, etc.)
 - [ ] User settings (eg. number of posts per page, theme, etc.)
 - [ ] Moderation tools / reporting or flagging objectionable comments for removable by admins
