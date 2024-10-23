@@ -2,12 +2,15 @@ import Link from "next/link";
 import { Pagination } from "./Pagination";
 import { Vote } from "./Vote";
 import { db } from "@/utils/db";
-import { POSTS_PER_PAGE } from "@/utils/config";
+import { POSTS_PER_PAGE as DEFAULT_POSTS_PER_PAGE } from "@//utils/config";
 import { sortPosts, timeSince } from "@/utils/utility";
 import QueryButtons from "@/components/QueryButtons";
 
 export async function PostList({ currentPage, searchParams }) {
   const sortBy = searchParams.sortBy || "newest"; // Default sort by newest
+  const userPostsPerPage =
+    parseInt(searchParams.postsPerPage, 10) || DEFAULT_POSTS_PER_PAGE;
+
   const { rows: posts } = await db.query(
     `SELECT posts.id, posts.title, posts.body, posts.created_at, users.name, 
        COALESCE(SUM(votes.vote), 0) AS vote_total,
@@ -20,7 +23,7 @@ export async function PostList({ currentPage, searchParams }) {
        ORDER BY vote_total DESC
        LIMIT $1
        OFFSET $2`,
-    [POSTS_PER_PAGE, POSTS_PER_PAGE * (currentPage - 1)]
+    [userPostsPerPage, userPostsPerPage * (currentPage - 1)]
   );
 
   const sortedPosts = sortPosts(posts, sortBy);
