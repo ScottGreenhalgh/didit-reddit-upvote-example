@@ -2,6 +2,7 @@ import { db } from "@/utils/db";
 import auth from "../app/middleware";
 import { revalidatePath } from "next/cache";
 import { VoteButtons } from "./VoteButtons";
+import { signIn } from "@/utils/auth";
 
 async function getExistingVote(userId, postId) {
   const { rows: existingVotes } = await db.query(
@@ -15,7 +16,8 @@ async function getExistingVote(userId, postId) {
 async function handleVote(userId, postId, newVote) {
   // Check if the user has already voted on this post
   if (!userId) {
-    throw new Error("Cannot vote without being logged in");
+    await signIn();
+    return;
   }
 
   const existingVote = await getExistingVote(userId, postId);
