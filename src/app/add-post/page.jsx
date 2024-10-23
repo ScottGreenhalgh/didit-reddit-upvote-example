@@ -17,7 +17,8 @@ export default async function Home() {
     const title = formData.get("title");
     const userId = session?.user?.id;
     if (!userId) {
-      throw new Error("You need to login");
+      await signIn();
+      return;
     }
 
     await db.query(
